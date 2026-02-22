@@ -160,9 +160,9 @@ const getEntry=ymd=>load()[ymd]||null
 const setEntry=(ymd,entry)=>{const all=load();all[ymd]=entry;saveAll(all)}
 const delEntry=ymd=>{const all=load();delete all[ymd];saveAll(all)}
 const clean=v=>v&&v.trim()?v.trim():""
-const computeFrom=(ymd,vals)=>{const ci=parseTime(ymd,clean(vals.checkIn));const rs=parseTime(ymd,clean(vals.ritStart));const re=parseTime(ymd,clean(vals.ritEnd));const co=parseTime(ymd,clean(vals.checkOut));const brk=clampNonNeg(msBetween(rs,re));const span=clampNonNeg(msBetween(ci,co));let total=null;if(span!=null&&brk!=null)total=clampNonNeg(span-brk);return{ci,rs,re,co,brk,span,total}}
+const computeFrom=(ymd,vals)=>{const ci=parseTime(ymd,clean(vals.checkIn));const rs=parseTime(ymd,clean(vals.ritStart));const re=parseTime(ymd,clean(vals.ritEnd));const co=parseTime(ymd,clean(vals.checkOut));let brk=null;if(!rs&&!re)brk=0;else brk=clampNonNeg(msBetween(rs,re));const span=clampNonNeg(msBetween(ci,co));let total=null;if(span!=null&&brk!=null)total=clampNonNeg(span-brk);return{ci,rs,re,co,brk,span,total}}
 const computeForInputs=()=>computeFrom(dateEl.value,{checkIn:checkInEl.value,ritStart:ritStartEl.value,ritEnd:ritEndEl.value,checkOut:checkOutEl.value})
-const statusFor=e=>{if(!e||(!e.checkIn&&!e.ritStart&&!e.ritEnd&&!e.checkOut))return{t:"Empty",h:"Fill any time(s) then tap Save progress"};if(e.checkIn&&e.ritStart&&e.ritEnd&&e.checkOut)return{t:"Finished",h:"Saved for this day"};return{t:"In progress",h:"You can keep saving as you fill more fields"}}
+const statusFor=e=>{const hasAny=!!(e&&((e.checkIn||"")+(e.ritStart||"")+(e.ritEnd||"")+(e.checkOut||"")).trim());if(!hasAny)return{t:"Empty",h:"Fill any time(s) then tap Save progress"};const hasCI=!!(e.checkIn&&e.checkIn.trim());const hasCO=!!(e.checkOut&&e.checkOut.trim());const hasBS=!!(e.ritStart&&e.ritStart.trim());const hasBE=!!(e.ritEnd&&e.ritEnd.trim());if(hasCI&&hasCO&&((!hasBS&&!hasBE)||(hasBS&&hasBE)))return{t:"Finished",h:"Saved for this day"};return{t:"In progress",h:"You can keep saving as you fill more fields"}};if(e.checkIn&&e.ritStart&&e.ritEnd&&e.checkOut)return{t:"Finished",h:"Saved for this day"};return{t:"In progress",h:"You can keep saving as you fill more fields"}}
 
 let weekOffset=0
 let selectedYmd=null
@@ -180,7 +180,7 @@ hStatus.textContent=st.h
 const r=computeForInputs()
 kRit.textContent=fmtDur(r.brk)
 kTotal.textContent=fmtDur(r.total)
-finishBtn.disabled=!(checkInEl.value&&ritStartEl.value&&ritEndEl.value&&checkOutEl.value)
+finishBtn.disabled=!(checkInEl.value&&checkOutEl.value&&((!ritStartEl.value&&!ritEndEl.value)||(ritStartEl.value&&ritEndEl.value)))
 renderThisWeekSummary()
 }
 
