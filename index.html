@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0a84ff"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="WorkBreak"><title>WorkBreak</title><style>
 :root{--bg:#0b0b0f;--card:#14141a;--muted:#9aa0a6;--text:#f2f3f5;--accent:#0a84ff;--danger:#ff453a;--ok:#30d158;--line:rgba(255,255,255,.08)}
 @media (prefers-color-scheme: light){:root{--bg:#f5f5f7;--card:#ffffff;--muted:#6b7280;--text:#111827;--accent:#0a84ff;--danger:#dc2626;--ok:#16a34a;--line:rgba(17,24,39,.08)}}
-*{box-sizing:border-box}html,body{height:100%;width:100%;max-width:100%;overflow-x:hidden}body{margin:0;width:100vw;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}html,body{height:100%;width:100%;max-width:100%;overflow-x:hidden}body{margin:0;width:100vw;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-text-size-adjust:100%;overflow-x:hidden}
 .wrap{max-width:740px;margin:0 auto;padding:18px 14px calc(40px + env(safe-area-inset-bottom))}
 @media(max-width:430px){.wrap{padding:14px 12px calc(34px + env(safe-area-inset-bottom));max-width:100%;width:100%}}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 2px 14px;position:sticky;top:0;background:linear-gradient(to bottom,var(--bg) 70%,transparent);padding-top:env(safe-area-inset-top);padding-bottom:10px;z-index:10}
@@ -22,7 +22,7 @@ input[type="time"],input[type="date"]{width:100%;padding:12px 12px;border-radius
 .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
 .btn{border:0;border-radius:14px;padding:12px 14px;font-weight:900;font-size:14px;min-height:48px}
 .btn.primary{background:var(--accent);color:white;flex:1;min-width:170px}
-.btn.ok{background:var(--ok);color:#001b06;flex:1;min-width:170px}
+.btn.ok{background:var(--ok);color:#ffffff;flex:1;min-width:170px}
 .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line);min-width:120px}
 .btn.danger{background:var(--danger);color:white;min-width:120px}
 .btn:disabled{opacity:.5}
@@ -41,6 +41,7 @@ input[type="time"],input[type="date"]{width:100%;padding:12px 12px;border-radius
 .item .m{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pill{padding:8px 10px;border-radius:999px;border:1px solid var(--line);font-weight:950;white-space:nowrap}
 .pill.ok{border-color:rgba(48,209,88,.35);color:var(--ok)}
+.pill.warn{border-color:rgba(255,204,0,.6);color:#ffcc00}
 .pill.muted{color:var(--muted)}
 .small{font-size:12px;color:var(--muted);line-height:1.35}
 .footer{margin-top:14px}
@@ -56,7 +57,6 @@ a{color:var(--accent);text-decoration:none}
 .kv{display:flex;justify-content:space-between;gap:10px;padding:10px;border:1px solid var(--line);border-radius:14px}
 .kv .k{font-size:12px;color:var(--muted);font-weight:800}
 .kv .v{font-weight:950}
-
 @media(max-width:430px){
 .top{gap:10px}
 .sub{max-width:38vw}
@@ -66,14 +66,14 @@ a{color:var(--accent);text-decoration:none}
 .btn{width:100%;min-width:0;flex:0 0 auto}
 .toolbar{justify-content:space-between}
 }
-</style></head><body><div class="wrap"><div class="top"><div class="brand"><div class="logo">R</div><div style="min-width:0"><h1>WorkBreak</h1><div class="sub" id="subtitle"></div></div></div><div class="tabs"><button class="tab active" id="tabToday">Today</button><button class="tab" id="tabWeek">Week</button></div></div>
+</style></head><body><div class="wrap"><div class="top"><div class="brand"><div class="logo">B</div><div style="min-width:0"><h1>WorkBreak</h1><div class="sub" id="subtitle"></div></div></div><div class="tabs"><button class="tab active" id="tabToday">Today</button><button class="tab" id="tabWeek">Week</button></div></div>
 
 <div id="viewToday" class="card">
 <div class="grid">
 <div class="field"><label>Date</label><input id="date" type="date"></div>
 <div class="field"><label>Check In</label><input id="checkIn" type="time" step="60"></div>
-<div class="field"><label>Break Start</label><input id="ritStart" type="time" step="60"></div>
-<div class="field"><label>Break End</label><input id="ritEnd" type="time" step="60"></div>
+<div class="field"><label>Break Start</label><input id="breakStart" type="time" step="60"></div>
+<div class="field"><label>Break End</label><input id="breakEnd" type="time" step="60"></div>
 <div class="field"><label>Check Out</label><input id="checkOut" type="time" step="60"></div>
 </div>
 
@@ -90,11 +90,11 @@ a{color:var(--accent);text-decoration:none}
 </div>
 
 <div class="kpis">
-<div class="kpi"><div class="t">Break Time</div><div class="v" id="kRit">--</div><div class="h">Break End − Break Start</div></div>
+<div class="kpi"><div class="t">Break Time</div><div class="v" id="kBreak">--</div><div class="h">Break End − Break Start</div></div>
 <div class="kpi"><div class="t">This Week Total</div><div class="v" id="kWeek">--</div><div class="h" id="hWeek"></div></div>
 </div>
 
-<div class="footer"><div class="notice">Your data is saved on this device (browser storage). Use Week → Download backup to keep a copy.</div></div>
+<div class="footer"><div class="notice">Saved on this device. Use Week → Download backup sometimes.</div></div>
 </div>
 
 <div id="viewWeek" class="card hidden">
@@ -117,17 +117,17 @@ a{color:var(--accent);text-decoration:none}
 </div>
 <div class="detailgrid">
 <div class="kv"><div class="k">Check In</div><div class="v" id="dCheckIn">--</div></div>
-<div class="kv"><div class="k">Break Start</div><div class="v" id="dRitStart">--</div></div>
-<div class="kv"><div class="k">Break End</div><div class="v" id="dRitEnd">--</div></div>
+<div class="kv"><div class="k">Break Start</div><div class="v" id="dBreakStart">--</div></div>
+<div class="kv"><div class="k">Break End</div><div class="v" id="dBreakEnd">--</div></div>
 <div class="kv"><div class="k">Check Out</div><div class="v" id="dCheckOut">--</div></div>
-<div class="kv"><div class="k">Break Time</div><div class="v" id="dRitTime">--</div></div>
+<div class="kv"><div class="k">Break Time</div><div class="v" id="dBreakTime">--</div></div>
 <div class="kv"><div class="k">Total Worked</div><div class="v" id="dTotal">--</div></div>
 </div>
 </div>
 
 <div class="sep"></div>
 <div class="kpis">
-<div class="kpi"><div class="t">Weekly Total</div><div class="v" id="wkTotal">--</div><div class="h">Sum of worked time in this week</div></div>
+<div class="kpi"><div class="t">Weekly Total</div><div class="v" id="wkTotal">--</div><div class="h">Sum of total worked in this week</div></div>
 <div class="kpi"><div class="t">Backup</div><div class="v" style="font-size:14px;font-weight:950">JSON</div><div class="h"><a href="#" id="exportBtn">Download</a> · <a href="#" id="importBtn">Import</a></div></div>
 </div>
 <input id="importFile" type="file" accept="application/json" class="hidden">
@@ -136,15 +136,15 @@ a{color:var(--accent);text-decoration:none}
 </div>
 
 <script>
-const SKEY="workrit_entries_v4"
+const SKEY="workbreak_entries_v1"
 const $=id=>document.getElementById(id)
 const tabToday=$("tabToday"),tabWeek=$("tabWeek"),viewToday=$("viewToday"),viewWeek=$("viewWeek")
-const dateEl=$("date"),checkInEl=$("checkIn"),ritStartEl=$("ritStart"),ritEndEl=$("ritEnd"),checkOutEl=$("checkOut")
+const dateEl=$("date"),checkInEl=$("checkIn"),breakStartEl=$("breakStart"),breakEndEl=$("breakEnd"),checkOutEl=$("checkOut")
 const saveBtn=$("saveBtn"),finishBtn=$("finishBtn"),deleteBtn=$("deleteBtn"),fillNowBtn=$("fillNowBtn")
-const kStatus=$("kStatus"),hStatus=$("hStatus"),kRit=$("kRit"),kTotal=$("kTotal"),kWeek=$("kWeek"),hWeek=$("hWeek"),subtitle=$("subtitle")
+const kStatus=$("kStatus"),hStatus=$("hStatus"),kBreak=$("kBreak"),kTotal=$("kTotal"),kWeek=$("kWeek"),hWeek=$("hWeek"),subtitle=$("subtitle")
 const prevWeekBtn=$("prevWeekBtn"),nextWeekBtn=$("nextWeekBtn"),thisWeekBtn=$("thisWeekBtn"),weekRangeEl=$("weekRange"),weekList=$("weekList"),wkTotal=$("wkTotal"),exportBtn=$("exportBtn"),importBtn=$("importBtn"),importFile=$("importFile")
 const dayDetail=$("dayDetail"),detailTitle=$("detailTitle"),detailSub=$("detailSub"),editDayBtn=$("editDayBtn")
-const dCheckIn=$("dCheckIn"),dRitStart=$("dRitStart"),dRitEnd=$("dRitEnd"),dCheckOut=$("dCheckOut"),dRitTime=$("dRitTime"),dTotal=$("dTotal")
+const dCheckIn=$("dCheckIn"),dBreakStart=$("dBreakStart"),dBreakEnd=$("dBreakEnd"),dCheckOut=$("dCheckOut"),dBreakTime=$("dBreakTime"),dTotal=$("dTotal")
 const pad=n=>String(n).padStart(2,"0")
 const toYMD=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
 const parseTime=(ymd,hm)=>{if(!hm||!ymd)return null;const [H,M]=hm.split(":").map(Number);const [y,m,da]=ymd.split("-").map(Number);return new Date(y,m-1,da,H,M,0,0)}
@@ -154,19 +154,18 @@ const fmtDur=ms=>{if(ms==null)return"--";ms=Math.round(ms/60000)*60000;const tot
 const weekStart=d=>{const c=new Date(d.getFullYear(),d.getMonth(),d.getDate(),12,0,0,0);const day=(c.getDay()+6)%7;c.setDate(c.getDate()-day);c.setHours(0,0,0,0);return c}
 const weekEndExclusive=d=>{const s=weekStart(d);const e=new Date(s);e.setDate(e.getDate()+7);return e}
 const inRange=(d,start,endEx)=>d>=start&&d<endEx
+const clean=v=>v&&v.trim()?v.trim():""
 const load=()=>{try{const raw=localStorage.getItem(SKEY);if(!raw)return{};const obj=JSON.parse(raw);return obj&&typeof obj==="object"?obj:{}}catch{return{}}}
 const saveAll=obj=>localStorage.setItem(SKEY,JSON.stringify(obj))
 const getEntry=ymd=>load()[ymd]||null
 const setEntry=(ymd,entry)=>{const all=load();all[ymd]=entry;saveAll(all)}
 const delEntry=ymd=>{const all=load();delete all[ymd];saveAll(all)}
-const clean=v=>v&&v.trim()?v.trim():""
-const computeFrom=(ymd,vals)=>{const ci=parseTime(ymd,clean(vals.checkIn));const rs=parseTime(ymd,clean(vals.ritStart));const re=parseTime(ymd,clean(vals.ritEnd));const co=parseTime(ymd,clean(vals.checkOut));let brk=null;if(!rs&&!re)brk=0;else brk=clampNonNeg(msBetween(rs,re));const span=clampNonNeg(msBetween(ci,co));let total=null;if(span!=null&&brk!=null)total=clampNonNeg(span-brk);return{ci,rs,re,co,brk,span,total}}
-const computeForInputs=()=>computeFrom(dateEl.value,{checkIn:checkInEl.value,ritStart:ritStartEl.value,ritEnd:ritEndEl.value,checkOut:checkOutEl.value})
-const statusFor=e=>{const hasAny=!!(e&&((e.checkIn||"")+(e.ritStart||"")+(e.ritEnd||"")+(e.checkOut||"")).trim());if(!hasAny)return{t:"Empty",h:"Fill any time(s) then tap Save progress"};const hasCI=!!(e.checkIn&&e.checkIn.trim());const hasCO=!!(e.checkOut&&e.checkOut.trim());const hasBS=!!(e.ritStart&&e.ritStart.trim());const hasBE=!!(e.ritEnd&&e.ritEnd.trim());if(hasCI&&hasCO&&((!hasBS&&!hasBE)||(hasBS&&hasBE)))return{t:"Finished",h:"Saved for this day"};return{t:"In progress",h:"You can keep saving as you fill more fields"}};if(e.checkIn&&e.ritStart&&e.ritEnd&&e.checkOut)return{t:"Finished",h:"Saved for this day"};return{t:"In progress",h:"You can keep saving as you fill more fields"}}
+const computeFrom=(ymd,vals)=>{const ci=parseTime(ymd,clean(vals.checkIn));const bs=parseTime(ymd,clean(vals.breakStart));const be=parseTime(ymd,clean(vals.breakEnd));const co=parseTime(ymd,clean(vals.checkOut));let brk=null;if(!bs&&!be)brk=0;else brk=clampNonNeg(msBetween(bs,be));const span=clampNonNeg(msBetween(ci,co));let total=null;if(span!=null&&brk!=null)total=clampNonNeg(span-brk);return{ci,bs,be,co,brk,span,total}}
+const computeForInputs=()=>computeFrom(dateEl.value,{checkIn:checkInEl.value,breakStart:breakStartEl.value,breakEnd:breakEndEl.value,checkOut:checkOutEl.value})
+const statusFor=e=>{const hasAny=!!(e&&((e.checkIn||"")+(e.breakStart||"")+(e.breakEnd||"")+(e.checkOut||"")).trim());if(!hasAny)return{t:"Empty",h:"Fill any time(s) then tap Save progress"};const hasCI=!!(e.checkIn&&e.checkIn.trim());const hasCO=!!(e.checkOut&&e.checkOut.trim());const hasBS=!!(e.breakStart&&e.breakStart.trim());const hasBE=!!(e.breakEnd&&e.breakEnd.trim());if(hasCI&&hasCO&&((!hasBS&&!hasBE)||(hasBS&&hasBE)))return{t:"Finished",h:"Saved for this day"};return{t:"In progress",h:"You can keep saving as you fill more fields"}}
 
 let weekOffset=0
 let selectedYmd=null
-
 const weekAnchor=()=>{const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+weekOffset*7);return d}
 const currentWeekRange=()=>{const a=weekAnchor();const ws=weekStart(a),we=weekEndExclusive(a);return{ws,we}}
 const labelWeekRange=(ws,we)=>`${toYMD(ws)} → ${toYMD(new Date(we.getTime()-86400000))}`
@@ -178,9 +177,9 @@ const st=statusFor(saved)
 kStatus.textContent=st.t
 hStatus.textContent=st.h
 const r=computeForInputs()
-kRit.textContent=fmtDur(r.brk)
+kBreak.textContent=fmtDur(r.brk)
 kTotal.textContent=fmtDur(r.total)
-finishBtn.disabled=!(checkInEl.value&&checkOutEl.value&&((!ritStartEl.value&&!ritEndEl.value)||(ritStartEl.value&&ritEndEl.value)))
+finishBtn.disabled=!(checkInEl.value&&checkOutEl.value&&((!breakStartEl.value&&!breakEndEl.value)||(breakStartEl.value&&breakEndEl.value)))
 renderThisWeekSummary()
 }
 
@@ -209,8 +208,9 @@ let sum=0
 for(const day of days){
 let pillClass="muted",pillText="No entry"
 if(day.e){
-const t=computeFrom(day.ymd,day.e).rit
-if(t!=null){pillClass="ok";pillText=fmtDur(t);sum+=t}else{pillText="In progress"}
+const r=computeFrom(day.ymd,day.e)
+if(r.total!=null){pillClass="ok";pillText=fmtDur(r.total);sum+=r.total}
+else if((day.e.checkIn||day.e.breakStart||day.e.breakEnd||day.e.checkOut)) {pillClass="warn";pillText="In progress"}
 }
 const name=day.d.toLocaleDateString(undefined,{weekday:"long"})
 const dstr=day.d.toLocaleDateString(undefined,{month:"short",day:"numeric"})
@@ -223,8 +223,7 @@ weekList.appendChild(item)
 wkTotal.textContent=fmtDur(sum)
 if(!selectedYmd){dayDetail.classList.add("hidden")}else{
 const sd=new Date(selectedYmd+"T00:00:00")
-if(!inRange(sd,ws,we)){selectedYmd=null;dayDetail.classList.add("hidden")}
-}
+if(!inRange(sd,ws,we)){selectedYmd=null;dayDetail.classList.add("hidden")}}
 }
 
 const renderDayDetail=(ymd,dayDate,entry)=>{
@@ -236,10 +235,10 @@ detailSub.textContent=`${dstr} · ${ymd}`
 const e=entry||getEntry(ymd)||{}
 const r=computeFrom(ymd,e)
 dCheckIn.textContent=clean(e.checkIn)||"--"
-dRitStart.textContent=clean(e.ritStart)||"--"
-dRitEnd.textContent=clean(e.ritEnd)||"--"
+dBreakStart.textContent=clean(e.breakStart)||"--"
+dBreakEnd.textContent=clean(e.breakEnd)||"--"
 dCheckOut.textContent=clean(e.checkOut)||"--"
-dRitTime.textContent=fmtDur(r.brk)
+dBreakTime.textContent=fmtDur(r.brk)
 dTotal.textContent=fmtDur(r.total)
 editDayBtn.onclick=()=>{switchToToday();dateEl.value=ymd;loadIntoForm(ymd)}
 }
@@ -247,16 +246,8 @@ editDayBtn.onclick=()=>{switchToToday();dateEl.value=ymd;loadIntoForm(ymd)}
 const loadIntoForm=ymd=>{
 const e=getEntry(ymd)
 if(e){
-checkInEl.value=e.checkIn||""
-ritStartEl.value=e.ritStart||""
-ritEndEl.value=e.ritEnd||""
-checkOutEl.value=e.checkOut||""
-}else{
-checkInEl.value=""
-ritStartEl.value=""
-ritEndEl.value=""
-checkOutEl.value=""
-}
+checkInEl.value=e.checkIn||"";breakStartEl.value=e.breakStart||"";breakEndEl.value=e.breakEnd||"";checkOutEl.value=e.checkOut||""
+}else{checkInEl.value="";breakStartEl.value="";breakEndEl.value="";checkOutEl.value=""}
 renderToday()
 }
 
@@ -264,7 +255,6 @@ const switchToToday=()=>{tabToday.classList.add("active");tabWeek.classList.remo
 const switchToWeek=()=>{tabWeek.classList.add("active");tabToday.classList.remove("active");viewWeek.classList.remove("hidden");viewToday.classList.add("hidden");renderWeekView()}
 tabToday.addEventListener("click",switchToToday)
 tabWeek.addEventListener("click",switchToWeek)
-
 prevWeekBtn.addEventListener("click",()=>{weekOffset-=1;selectedYmd=null;renderWeekView()})
 nextWeekBtn.addEventListener("click",()=>{weekOffset+=1;selectedYmd=null;renderWeekView()})
 thisWeekBtn.addEventListener("click",()=>{weekOffset=0;selectedYmd=null;renderWeekView()})
@@ -272,11 +262,12 @@ thisWeekBtn.addEventListener("click",()=>{weekOffset=0;selectedYmd=null;renderWe
 const validateFinish=()=>{
 const ymd=dateEl.value
 if(!ymd)return{ok:false,msg:"Pick a date"}
-if(!checkInEl.value||!ritStartEl.value||!ritEndEl.value||!checkOutEl.value)return{ok:false,msg:"Fill all times"}
+if(!checkInEl.value||!checkOutEl.value)return{ok:false,msg:"Fill check-in and check-out"}
+const hasBS=!!breakStartEl.value,hasBE=!!breakEndEl.value
+if((hasBS&&!hasBE)||(!hasBS&&hasBE))return{ok:false,msg:"Fill both break times (or leave both empty)"}
 const r=computeForInputs()
-if(!(r.ci&&r.rs&&r.re&&r.co))return{ok:false,msg:"Fill all times"}
-const orderOk=(r.ci<=r.rs)&&(r.rs<=r.re)&&(r.re<=r.co)
-if(!orderOk)return{ok:false,msg:"Times must be in order"}
+if(!(r.ci&&r.co))return{ok:false,msg:"Fill check-in and check-out"}
+if(hasBS&&hasBE){if(!(r.bs&&r.be))return{ok:false,msg:"Fill both break times"};if(!(r.ci<=r.bs&&r.bs<=r.be&&r.be<=r.co))return{ok:false,msg:"Times must be in order"}}else{if(r.ci>r.co)return{ok:false,msg:"Times must be in order"}}
 return{ok:true,msg:""}
 }
 
@@ -284,7 +275,7 @@ saveBtn.addEventListener("click",()=>{
 const ymd=dateEl.value
 if(!ymd){alert("Pick a date");return}
 const existing=getEntry(ymd)||{}
-const merged={checkIn:clean(checkInEl.value)||existing.checkIn||"",ritStart:clean(ritStartEl.value)||existing.ritStart||"",ritEnd:clean(ritEndEl.value)||existing.ritEnd||"",checkOut:clean(checkOutEl.value)||existing.checkOut||""}
+const merged={checkIn:clean(checkInEl.value)||existing.checkIn||"",breakStart:clean(breakStartEl.value)||existing.breakStart||"",breakEnd:clean(breakEndEl.value)||existing.breakEnd||"",checkOut:clean(checkOutEl.value)||existing.checkOut||""}
 setEntry(ymd,merged)
 renderToday()
 alert("Saved")
@@ -294,7 +285,7 @@ finishBtn.addEventListener("click",()=>{
 const v=validateFinish()
 if(!v.ok){alert(v.msg);return}
 const ymd=dateEl.value
-setEntry(ymd,{checkIn:clean(checkInEl.value),ritStart:clean(ritStartEl.value),ritEnd:clean(ritEndEl.value),checkOut:clean(checkOutEl.value)})
+setEntry(ymd,{checkIn:clean(checkInEl.value),breakStart:clean(breakStartEl.value),breakEnd:clean(breakEndEl.value),checkOut:clean(checkOutEl.value)})
 renderToday()
 alert("Shift saved")
 })
@@ -302,20 +293,20 @@ alert("Shift saved")
 deleteBtn.addEventListener("click",()=>{
 const ymd=dateEl.value
 if(!ymd){alert("Pick a date");return}
-if(confirm("Delete this day?")){delEntry(ymd);loadIntoForm(ymd);alert("Deleted")}
-})
+if(confirm("Delete this day?")){delEntry(ymd);loadIntoForm(ymd);alert("Deleted")}}
+)
 
 fillNowBtn.addEventListener("click",()=>{
 const now=new Date()
 const t=`${pad(now.getHours())}:${pad(now.getMinutes())}`
 if(!checkInEl.value)checkInEl.value=t
-else if(!ritStartEl.value)ritStartEl.value=t
-else if(!ritEndEl.value)ritEndEl.value=t
+else if(!breakStartEl.value)breakStartEl.value=t
+else if(!breakEndEl.value)breakEndEl.value=t
 else if(!checkOutEl.value)checkOutEl.value=t
 renderToday()
 })
 
-;[dateEl,checkInEl,ritStartEl,ritEndEl,checkOutEl].forEach(el=>el.addEventListener("input",renderToday))
+;[dateEl,checkInEl,breakStartEl,breakEndEl,checkOutEl].forEach(el=>el.addEventListener("input",renderToday))
 
 exportBtn.addEventListener("click",(e)=>{
 e.preventDefault()
@@ -324,7 +315,7 @@ const blob=new Blob([data],{type:"application/json"})
 const url=URL.createObjectURL(blob)
 const a=document.createElement("a")
 a.href=url
-a.download="workrit-backup.json"
+a.download="workbreak-backup.json"
 document.body.appendChild(a)
 a.click()
 a.remove()
@@ -335,15 +326,7 @@ importBtn.addEventListener("click",(e)=>{e.preventDefault();importFile.click()})
 importFile.addEventListener("change",async()=>{
 const f=importFile.files&&importFile.files[0]
 if(!f)return
-try{
-const txt=await f.text()
-const obj=JSON.parse(txt)
-if(!obj||typeof obj!=="object")throw new Error("bad")
-localStorage.setItem(SKEY,JSON.stringify(obj))
-alert("Imported")
-renderToday()
-renderWeekView()
-}catch{alert("Import failed")}
+try{const txt=await f.text();const obj=JSON.parse(txt);if(!obj||typeof obj!=="object")throw new Error("bad");localStorage.setItem(SKEY,JSON.stringify(obj));alert("Imported");renderToday();renderWeekView()}catch{alert("Import failed")}
 importFile.value=""
 })
 
